@@ -6,7 +6,7 @@ $ curl -fsSL https://get.docker.com -o get-docker.sh
 $ sh get-docker.sh
 ---
 STEP2:
-move to root user (sudo -i)
+* move to root user (sudo -i)
 # Run these commands as root
 wget https://storage.googleapis.com/golang/getgo/installer_linux
 chmod +x ./installer_linux
@@ -27,10 +27,10 @@ systemctl enable --now cri-docker.socket
 ---
 STEP3:
 # run the below commands in root
-*create a file 
--copy below commands to that file
--change the file permissions (sudo chmod 744 <file name>)
--Run the command (./<file name>)
+* create a file 
+* copy below commands to that file
+* change the file permissions (sudo chmod 744 <file name>)
+* Run the command (./<file name>)
 ""
 #!/bin/sh
 sudo apt-get update
@@ -43,9 +43,9 @@ sudo apt-mark hold kubelet kubeadm kubectl
 
 ''
 # Creating alias for my requirement
--alias kaf='kubectl apply -f'
--alias kgp='kubectl get pods'
--alias kar='kubectl api-resources'
--alias kdp='kubectl describe pods'
--alias kgpw='kubectl get pods -o w'
--alias kd='kubectl delete -f'
+* alias kaf='kubectl apply -f'
+* alias kgp='kubectl get pods'
+* alias kar='kubectl api-resources'
+* alias kdp='kubectl describe pods'
+* alias kgpw='kubectl get pods -o w'
+* alias kd='kubectl delete -f'

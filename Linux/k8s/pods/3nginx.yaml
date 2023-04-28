@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Relpicaset
+metadata: 
+  name: nginx-rs
+spec: 
+  mainReadySeconds: 1
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.23
+          ports:
+            - containerPort: 80

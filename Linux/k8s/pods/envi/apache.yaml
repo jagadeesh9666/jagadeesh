@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: apache
+spec: 
+  container: 
+      - env:
+        name: apache2
+        value: MYSQL_ROOT_PASSWORD
+
+          

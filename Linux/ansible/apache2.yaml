@@ -1,0 +1,4 @@
+---
+- name: apache installation
+  hosts: all
+  

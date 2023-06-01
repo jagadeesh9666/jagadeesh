@@ -1,0 +1,10 @@
+---
+- name: .net
+  hosts: all
+  become: yes
+  tasks:
+    - name: install dotnet
+      apt: 
+        name: dotnet-sdk-6.0
+        state: present
+        update_cache: true

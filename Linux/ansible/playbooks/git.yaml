@@ -1,8 +1,10 @@
 ---
- - name: git repository
-   become: yes
-   hosts: node1
-   tasks: 
-     - name: install git
-       apt: git
-       state: present
+- name: git repository
+  become: yes
+  hosts: node1
+  tasks: 
+    - name: install git
+      apt:
+        name: git
+        state: present
+        

@@ -3,7 +3,7 @@
   hosts: red
   become: yes
   tasks:
-    - name: install apache server
+    - name: install httpd server
       ansible.builtin.yum:
         name: httpd
         state: present

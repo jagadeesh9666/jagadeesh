@@ -8,7 +8,7 @@
         msg: "this playbook is designed to work on ubuntu only"
       when: ansible_facts['distribution'] != "Ubuntu"
     - name: install java
-      apt: 
+      ansible.builtin.apt: 
         name: "{{ java_package }}"
         update_cache: yes
         state: present

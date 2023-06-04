@@ -1,0 +1,13 @@
+---
+- name: install tomcat
+  hosts: tomcat
+  become: yes
+  tasks: 
+    - name: check if playbook is being executed in supported 'os_family'
+      ansible.builtin.fail:
+        msg: "this playbook is designed to work on ubuntu only"
+      when: ansible_facts['distribution'] != "Ubuntu"
+    - name: install java
+      apt: "{{ java_package }}"
+      update_cache: yes
+      state: present

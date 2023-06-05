@@ -24,3 +24,32 @@
         name: "{{ dotnet_version}}"
         update_cache: yes
         state: present
+    - name: install unzip
+      ansible.builtin.apt: 
+        name: unzip
+        update_cache: yes
+        state: present
+    - name: Create a directory nopcommerce
+      ansible.builtin.file:
+      path: /usr/share/nopCommerce
+      state: directory
+    - name: Go to the folder and execute command
+      command: chdir=/usr/share/nopCommerce ls
+    - name: Download foo.conf
+      ansible.builtin.get_url:
+        url: https://github.com/nopSolutions/nopCommerce/releases/download/release-4.60.3/nopCommerce_4.60.3_NoSource_linux_x64.zip
+        dest: /usr/share/nopCommerce
+    - name: Unarchive a file that is already on the remote machine
+      ansible.builtin.unarchive:
+        src: /usr/share/nopCommerce/nopCommerce_4.60.3_NoSource_linux_x64.zip
+        dest: /usr/share/nopCommerce
+        remote_src: yes
+    - name: Create a directory bin 
+      ansible.builtin.file:
+        path: /usr/share/nopCommerce/bin
+        state: directory
+    - name: Create a directory logs
+      ansible.builtin.file:
+        path: /usr/share/nopCommerce/logs
+        state: directory
+    

@@ -31,8 +31,8 @@
         state: present
     - name: Create a directory nopcommerce
       ansible.builtin.file:
-      path: /usr/share/nopCommerce
-      state: directory
+        path: /usr/share/nopCommerce
+        state: directory
     - name: Go to the folder and execute command
       command: chdir=/usr/share/nopCommerce ls
     - name: Download foo.conf

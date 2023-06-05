@@ -5,7 +5,7 @@
   vars: 
     info_page_path: /home/ubuntu
   tasks:
-    - name: install .net
+    - name: copy url
       ansible.builtin.get_url:
         url: https://packages.microsoft.com/config/ubuntu/{{ os_version }}/packages-microsoft-prod.deb
         dest: "{{ info_page_path }}"
@@ -15,7 +15,7 @@
         selection: install
       notify:
         - stop install package
-    - name: Remove file (delete file)
+    - name: Remove packages-microsoft-prod.deb
       ansible.builtin.file:
         path: "{{ info_page_path }}"
         state: absent
@@ -24,8 +24,3 @@
         name: "{{ dotnet_version}}"
         update_cache: yes
         state: present
-  handlers:
-    - name: stop install package
-      ansible.builtin.dpkg_selections:
-        name: packages-microsoft-prod.deb
-        selection: install

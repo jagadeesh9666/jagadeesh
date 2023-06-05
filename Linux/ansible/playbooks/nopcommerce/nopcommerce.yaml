@@ -2,12 +2,13 @@
 - name: install nopcommerce
   hosts: node1
   become: yes
-  vars: /home/ubuntu
+  vars: 
+    info_page_path: /home/ubuntu
   tasks:
     - name: install .net
       ansible.builtin.get_url:
         url: https://packages.microsoft.com/config/ubuntu/{{ os_version }}/packages-microsoft-prod.deb
-        dest: "{{ vars }}"
+        dest: "{{ info_page_path }}"
     - name: install the debian package
       ansible.builtin.dpkg_selections:
         name: packages-microsoft-prod.deb
@@ -16,7 +17,7 @@
         - stop install package
     - name: Remove file (delete file)
       ansible.builtin.file:
-        path: "{{ vars }}"
+        path: "{{ info_page_path }}"
         state: absent
     - name: install dotnet
       ansible.builtin.apt: 

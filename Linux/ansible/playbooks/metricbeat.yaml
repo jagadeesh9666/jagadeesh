@@ -7,11 +7,11 @@
       apt: 
         name: apt-transport-https
         state: present
-    - name: download metricbeat file
-      ansible.builtin.get_url:
+    - name: download metricbeat file and add it to apt-keys
+      ansible.builtin.apt_key:
         url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-        dest: apt-key add -
-    - name: copy the info.php page
+        state: present
+    - name: copy repository information
       ansible.builtin.copy:
         content: "deb https://artifacts.elastic.co/packages/8.x/apt stable main"
         dest: /etc/apt/sources.list.d/elastic-8.x.list
@@ -23,5 +23,4 @@
     - name: Make sure a service unit is running
       ansible.builtin.systemd:
         name: metricbeat
-        enabled: true
-       
+        state: started

@@ -13,8 +13,6 @@
       ansible.builtin.dpkg_selections:
         name: packages-microsoft-prod.deb
         selection: install
-      notify:
-        - stop install package
     - name: Remove packages-microsoft-prod.deb
       ansible.builtin.file:
         path: "{{ info_page_path }}"

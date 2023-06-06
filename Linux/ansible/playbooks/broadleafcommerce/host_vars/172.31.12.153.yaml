@@ -1,4 +1,4 @@
 ---
 broadleaf_version: 6.1.0-GA
-tomcat_version: 9.0.48
+tomcat_version: 10.1.9
 java_version: openjdk-11-jdk

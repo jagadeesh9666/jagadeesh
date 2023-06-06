@@ -1,6 +1,6 @@
 ---
 - name: Deploy Broadleaf Commerce
-  hosts: your_server_hostname
+  hosts: ubuntu
   become: yes
   tasks:
     - name: Install Java
@@ -12,13 +12,11 @@
       apt:
         name: "tomcat{{ tomcat_version }}"
         state: present
-
     - name: Deploy Broadleaf Commerce WAR
       become_user: tomcat
       get_url:
         url: "https://github.com/BroadleafCommerce/BroadleafCommerce/releases/download/{{ broadleaf_version }}/broadleaf-{{ broadleaf_version }}.war"
         dest: "/var/lib/tomcat{{ tomcat_version }}/webapps/ROOT.war"
-
     - name: Configure Tomcat
       become_user: root
       template:
@@ -26,7 +24,6 @@
         dest: /etc/tomcat{{ tomcat_version }}/tomcat-users.xml
       notify:
         - Restart Tomcat
-
   handlers:
     - name: Restart Tomcat
       service:

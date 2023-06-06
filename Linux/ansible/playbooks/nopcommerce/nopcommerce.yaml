@@ -49,7 +49,7 @@
     - name: Execute dotnet command
       command: /usr/bin/dotnet Nop.Web.dll --urls "http://0.0.0.0:5000"
       args:
-        chdir: /usr/bin/dotnet
+        chdir: /usr/share/nopCommerce
     - name: Add the user nop
       ansible.builtin.user:
         name: nop

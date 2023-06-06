@@ -8,10 +8,20 @@
         name: "{{ java_version }}"
         state: present
         update_cache: yes
-    - name: Install Tomcat
-      apt:
-        name: "tomcat{{ tomcat_version }}"
-        state: present
+    - name: download tomcat
+      ansible.builtin.get_url:
+        url: "https://www-eu.apache.org/dist/tomcat/tomcat-{{ tomcat_major_version }}/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz"
+        dest: "/tmp/apache-tomcat-{{ tomcat_version }}.tar.gz"
+    - name: find if the tomcat is already extracted
+      ansible.builtin.stat:
+        path: "{{ homedir }}/apache-tomcat-{{ tomcat_version }}/LICENSE"
+      register: license_info
+    - name: extract tomcat
+      ansible.builtin.unarchive:
+        src: "/tmp/apache-tomcat-{{ tomcat_version }}.tar.gz"
+        dest: "{{ homedir }}"
+        remote_src: yes
+      when: not license_info.stat.exists
     - name: Deploy Broadleaf Commerce WAR
       become_user: tomcat
       get_url:

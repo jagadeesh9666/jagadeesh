@@ -9,14 +9,8 @@
       ansible.builtin.get_url:
         url: https://packages.microsoft.com/config/ubuntu/{{ os_version }}/packages-microsoft-prod.deb
         dest: "{{ info_page_path }}"
-    - name: install the debian package
-      ansible.builtin.dpkg_selections:
-        name: packages-microsoft-prod.deb
-        selection: install
-    - name: Remove packages-microsoft-prod.deb
-      ansible.builtin.file:
-        path: "{{ info_page_path }}"
-        state: absent
+      notify:
+        - install the debian package
     - name: install dotnet
       ansible.builtin.apt: 
         name: "{{ dotnet_version}}"
@@ -54,3 +48,8 @@
       command: /usr/bin/dotnet Nop.Web.dll --urls "http://0.0.0.0:5000"
       args:
         chdir: /usr/share/nopCommerce
+  handlers:
+    - name: install the debian package
+      ansible.builtin.dpkg_selections:
+        name: packages-microsoft-prod.deb
+        selection: install

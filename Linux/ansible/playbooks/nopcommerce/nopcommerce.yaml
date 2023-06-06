@@ -74,10 +74,6 @@
         name: nopCommerce.service
         enabled: yes
         state: started
-    - name: Execute dotnet command
-      command: /usr/bin/dotnet Nop.Web.dll --urls "http://0.0.0.0:5000"
-      args:
-        chdir: /usr/share/nopCommerce
   handlers:
     - name: install the debian package
       ansible.builtin.dpkg_selections:

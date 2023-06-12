@@ -5,6 +5,8 @@ metadata:
   labels: 
     app: nginx
 spec: 
+  selector: 
+    app: nginx
   minReadySeconds: 3
   replicas: 4
   template: 

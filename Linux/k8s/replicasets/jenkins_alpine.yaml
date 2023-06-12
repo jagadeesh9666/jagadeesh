@@ -1,5 +1,6 @@
+---
 apiVersion: apps/v1
-kind: Relpicaset
+kind: RelpicaSet
 metadata: 
   name: jen-alp-rs
 spec: 

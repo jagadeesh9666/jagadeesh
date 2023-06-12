@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata: 
+  name: schudle
+spec: 
+  schedule: '* * * * *' 
+  jobTemplate: 
+    metadata: 
+      name: repeat
+    spec: 
+      template: 
+        metadata: 
+          name: check
+        spec: 
+          restartPolicy: OnFailure
+          containers: 
+            - name: alpine
+              image: alpine
+              ports: 
+                - containerPort: 80
+              commands: 
+                - sleep
+                - 3s 

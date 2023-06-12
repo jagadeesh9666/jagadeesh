@@ -3,7 +3,7 @@ kind: ReplicaSet
 metadata: 
   name: nginx-rs
 spec: 
-  mainReadySeconds: 2
+  mainReadySeconds: 1
   replicas: 3
   selector: 
     matchLabels: 

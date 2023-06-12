@@ -2,9 +2,9 @@
 apiVersion: apps/v1
 kind: RelpicaSet
 metadata: 
-  name: jen-alp-rs
+  name: jen-rs
 spec: 
-  mainReadySeconds: 3
+  minReadySeconds: 3
   replicas: 5
   selector:
     matchLabels:

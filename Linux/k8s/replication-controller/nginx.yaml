@@ -11,7 +11,8 @@ spec:
   replicas: 4
   template: 
     metadata: 
-      name: nginx-pod
+      labels: 
+        name: nginx-pod
     spec: 
       containers: 
         - name: nginx-container

@@ -6,7 +6,7 @@ metadata:
     app: nginx
 spec: 
   selector: 
-    app: nginx
+    name: nginx-pod
   minReadySeconds: 3
   replicas: 4
   template: 

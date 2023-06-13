@@ -43,9 +43,9 @@ sudo apt-mark hold kubelet kubeadm kubectl
 
 ''
 # Creating alias for my requirement
-* alias kaf='kubectl apply -f'
+* alias ka='kubectl apply -f'
 * alias kgp='kubectl get pods'
 * alias kar='kubectl api-resources'
 * alias kdp='kubectl describe pods'
-* alias kgpw='kubectl get pods -o w'
+* alias kgpw='kubectl get pods -o wide'
 * alias kd='kubectl delete -f'

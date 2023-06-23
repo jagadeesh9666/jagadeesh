@@ -1,0 +1,19 @@
+---
+- name: game of life
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install openjdk
+      apt: 
+        name: "{{ java_package }}" 
+        state: present
+        update_cache: yes
+    - name: install tomcat
+      apt: 
+        name: tomcat9
+        state: present
+    - name: download game of life
+      ansible.builtin.get_url:
+        url: https://referenceapplicationskhaja.s3.us-west-2.amazonaws.com/gameoflife.war
+        dest: /tmp
+    

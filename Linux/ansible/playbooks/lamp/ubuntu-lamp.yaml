@@ -19,6 +19,9 @@
       ansible.builtin.copy:
         src: info.php
         dest: /var/www/html/info.php
+      notify: 
+        - restart apache2
+  handlers: 
     - name: restart apache2
       ansible.builtin.systemd:
         name: apache2

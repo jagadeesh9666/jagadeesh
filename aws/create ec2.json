@@ -1,0 +1,17 @@
+aws ec2 run
+"-": {
+    "Type": "AWS::EC2::Instance",
+    "Properties": {
+        "KeyName": powershell,
+        "ImageId": { ami-0f5ee92e2d63afc18 },
+        "InstanceType": "t2.micro",
+        "Monitoring": "true",
+        "SecurityGroupIds" : [sg-058faade30c71445d],
+        "Tags": [
+            {
+                "Key": "name",
+                "Value": "create"
+            }
+        ],
+}
+        }

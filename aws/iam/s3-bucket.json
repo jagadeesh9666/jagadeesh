@@ -1,0 +1,13 @@
+{
+    "Version": "2012-10-17",
+    "Statement": {
+        "action": "s3:*",
+        "effect": "Allow",
+        "resource": "*"
+    },
+    {
+        "action": "s3:Delete*",
+        "effect": "Deny",
+        "resource": "*"
+    }
+}

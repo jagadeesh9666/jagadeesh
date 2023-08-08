@@ -1,13 +1,15 @@
 {
     "Version": "2012-10-17",
-    "Statement": {
-        "action": "s3:*",
-        "effect": "Allow",
-        "resource": "*"
+    "Statement": [
+        {
+        "Action": "s3:*",
+        "Effect": "Allow",
+        "Resource": "*"
     },
     {
-        "action": "s3:Delete*",
-        "effect": "Deny",
-        "resource": "*"
+        "Action": "s3:Delete*",
+        "Effect": "Deny",
+        "Resource": "*"
     }
+    ]
 }

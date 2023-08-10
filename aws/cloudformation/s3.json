@@ -1,13 +1,9 @@
-{
-    "AWSTemplateFormatVersion" : "version date",
-  
-    "Description" : "JSON string",
+
     "Resources" : {
         "cf1s3" : {
             "Type" : "AWS::S3::Bucket",
             "Properties" : {
-                "BucketName" : "cfs3"
+                "BucketName" : "s3clofor"
             }
         }
    }
-}

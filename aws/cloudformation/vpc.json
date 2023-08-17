@@ -1,45 +1,13 @@
 {
     "Resources": {
-        "demovpc": {
+        "myvpc": {
             "Type": "AWS::EC2::VPC",
             "Properties": {
-                "CidrBlock": "10.10.0.0/16",
+                "CidrBlock": "192.168.0.0/16",
                 "Tags": [
                     {
-                        "Key": "process",
-                        "Value": "cloudformation"
-                    }
-                ]
-            }
-        },
-        "webSubnet": {
-            "Type": "AWS::EC2::Subnet",
-            "Properties": {
-                "VpcId": {
-                    "Ref": "demovpc"
-                },
-                "CidrBlock": "10.10.1.0/20",
-                "AvailabilityZone": "ap-south-1a",
-                "Tags": [
-                    {
-                        "Key": "subnet",
-                        "Value": "1"
-                    }
-                ]
-            }
-        },
-        "appSubnet": {
-            "Type": "AWS::EC2::Subnet",
-            "Properties": {
-                "VpcId": {
-                    "Ref": "demovpc"
-                },
-                "CidrBlock": "10.10.2.0/20",
-                "AvailabilityZone": "ap-south-1a",
-                "Tags": [
-                    {
-                        "Key": "subnet",
-                        "Value": "2"
+                        "Key": "Name",
+                        "Value": "cfvpc"
                     }
                 ]
             }

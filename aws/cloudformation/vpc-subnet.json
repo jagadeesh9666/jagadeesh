@@ -1,61 +1,61 @@
 {
     "Resources": {
-        "ntiervpc": {
+        "myvpc": {
             "Type": "AWS::EC2::VPC",
             "Properties": {
-                "CidrBlock": "10.10.0.0/16",
+                "CidrBlock": "192.168.0.0/16",
                 "Tags": [
                     {
                         "Key": "Name",
-                        "Value": "primaryvnet"
+                        "Value": "cfvpc"
                     }
                 ]
             }
         },
-        "websubnet": {
+        "db1": {
             "Type": "AWS::EC2::Subnet",
             "Properties": {
                 "AvailabilityZone": "ap-south-1a",
                 "VpcId": {
-                    "Ref": "ntiervpc"
+                    "Ref": "myvpc"
                 },
-                "CidrBlock": "10.10.0.0/24",
+                "CidrBlock": "192.168.0.0/24",
                 "Tags": [
                     {
                         "Key": "Name",
-                        "Value": "web"
+                        "Value": "db1"
                     }
                 ]
             }
         },
-        "appsubnet": {
+        "web1": {
             "Type": "AWS::EC2::Subnet",
             "Properties": {
                 "AvailabilityZone": "ap-south-1a",
                 "VpcId": {
-                    "Ref": "ntiervpc"
+                    "Ref": "myvpc"
                 },
-                "CidrBlock": "10.10.1.0/24",
+                "CidrBlock": "192.168.1.0/24",
                 "Tags": [
                     {
                         "Key": "Name",
-                        "Value": "app"
+                        "Value": "web1"
                     }
                 ]
             }
         },
-        "dbsubnet": {
+        "app": {
             "Type": "AWS::EC2::Subnet",
             "Properties": {
                 "AvailabilityZone": "ap-south-1a",
                 "VpcId": {
-                    "Ref": "ntiervpc"
+                    "Ref": "myvpc"
                 },
-                "CidrBlock": "10.10.2.0/24",
+                "CidrBlock": "192.168.2.0/24",
                 "Tags": [
                     {
                         "Key": "Name",
-                        "Value": "db"
+                        "Value": "app1"
                     }
                 ]
             }

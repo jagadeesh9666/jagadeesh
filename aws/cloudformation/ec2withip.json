@@ -11,6 +11,19 @@
             "Description": "These are subnet ranges",
             "Type": "CommaDelimitedList",
             "Default": "192.168.0.0/24,192.168.1.0/24,192.168.2.0/24"
+        },
+        "webami": {
+            "Description": "Ami id of web ec2",
+            "Type": "AWS::EC2::Image::Id"
+        },
+        "webinstancetype": {
+            "Description": "instance type",
+            "Type": "String",
+            "Default": "t2.micro"
+        },
+        "webkey": {
+            "Description": "key pair for web",
+            "Type": "AWS::EC2::KeyPair::KeyName"
         }
     },
     "Resources": {
@@ -239,9 +252,9 @@
                         "IpProtocol": "tcp",
                         "FromPort": 0,
                         "ToPort": 65000,
-                        "CidrIp": 
-                        { "Ref": "vpccidr" }
-                        
+                        "CidrIp": {
+                            "Ref": "vpccidr"
+                        }
                     }
                 ],
                 "VpcId": {
@@ -264,9 +277,9 @@
                         "IpProtocol": "tcp",
                         "FromPort": 3306,
                         "ToPort": 3306,
-                        "CidrIp": 
-                        { "Ref": "vpccidr" }
-                        
+                        "CidrIp": {
+                            "Ref": "vpccidr"
+                        }
                     }
                 ],
                 "VpcId": {
@@ -276,6 +289,34 @@
                     {
                         "Key": "Name",
                         "Value": "dbsg"
+                    }
+                ]
+            }
+        },
+        "webec2": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "ImageId": {
+                    "Ref": "webami"
+                },
+                "InstanceType": {
+                    "Ref": "webinstancetype"
+                },
+                "KeyName": {
+                    "Ref": "webkey"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "AssociatePublicIpAddress": true,
+                        "SubnetId": {
+                            "Ref": "web1"
+                        },
+                        "GroupSet": [
+                            {
+                                "Ref": "websec"
+                            }
+                        ],
+                        "DeviceIndex": "0"
                     }
                 ]
             }

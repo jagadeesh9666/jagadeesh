@@ -1,0 +1,49 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "This template creates a ntier architecture",
+    "Parameters": {
+        "webami": {
+            "Description": "Ami id of web ec2",
+            "Type": "AWS::EC2::Image::Id"
+        },
+        "webinstancetype": {
+            "Description": "instance type",
+            "Type": "String",
+            "Default": "t2.micro"
+        },
+        "webkey": {
+            "Description": "key pair for web",
+            "Type": "AWS::EC2::KeyPair::KeyName"
+        }
+    },
+    "Resources": {
+        "webec2": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "ImageId": {
+                    "Ref": "webami"
+                },
+                "InstanceType": {
+                    "Ref": "webinstancetype"
+                },
+                "KeyName": {
+                    "Ref": "webkey"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "AssociatePublicIpAddress": true,
+                        "SubnetId": {
+                            "Ref": "web1"
+                        },
+                        "GroupSet": [
+                            {
+                                "Ref": "websec"
+                            }
+                        ],
+                        "DeviceIndex": "0"
+                    }
+                ]
+            }
+        }
+    }
+}

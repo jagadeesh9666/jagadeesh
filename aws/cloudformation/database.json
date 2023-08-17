@@ -1,0 +1,383 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "This template creates a ntier architecture",
+  "Parameters": {
+    "vpccidr": {
+      "Description": "vpc cidr range",
+      "Type": "String",
+      "Default": "192.168.0.0/16"
+    },
+    "subnetcidrs": {
+      "Description": "These are subnet ranges",
+      "Type": "CommaDelimitedList",
+      "Default": "192.168.0.0/24,192.168.1.0/24,192.168.2.0/24,192.168.3.0/24"
+    },
+    "db1subnetaz": {
+      "Description": "az for db1 subnet",
+      "Type": "AWS::EC2::AvailabilityZone::Name"
+    },
+    "db2subnetaz": {
+      "Description": "az for db2 subnet",
+      "Type": "AWS::EC2::AvailabilityZone::Name"
+    },
+    "websubnetaz": {
+      "Description": "az for web subnet",
+      "Type": "AWS::EC2::AvailabilityZone::Name"
+    },
+    "appsubnetaz": {
+      "Description": "az for app subnet",
+      "Type": "AWS::EC2::AvailabilityZone::Name"
+    }
+  },
+  "Resources": {
+    "myvpc": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": {
+          "Ref": "vpccidr"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "cfvpc"
+          }
+        ]
+      }
+    },
+    "db1": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Ref": "db1subnetaz"
+        },
+        "VpcId": {
+          "Ref": "myvpc"
+        },
+        "CidrBlock": {
+          "Fn::Select": [
+            0,
+            {
+              "Ref": "subnetcidrs"
+            }
+          ]
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "db1"
+          }
+        ]
+      }
+    },
+    "web1": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Ref": "websubnetaz"
+        },
+        "VpcId": {
+          "Ref": "myvpc"
+        },
+        "CidrBlock": {
+          "Fn::Select": [
+            1,
+            {
+              "Ref": "subnetcidrs"
+            }
+          ]
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "web1"
+          }
+        ]
+      }
+    },
+    "app": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Ref": "appsubnetaz"
+        },
+        "VpcId": {
+          "Ref": "myvpc"
+        },
+        "CidrBlock": {
+          "Fn::Select": [
+            2,
+            {
+              "Ref": "subnetcidrs"
+            }
+          ]
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "app1"
+          }
+        ]
+      }
+    },
+    "db2": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Ref": "db2subnetaz"
+        },
+        "VpcId": {
+          "Ref": "myvpc"
+        },
+        "CidrBlock": {
+          "Fn::Select": [
+            3,
+            {
+              "Ref": "subnetcidrs"
+            }
+          ]
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "db2"
+          }
+        ]
+      }
+    },
+    "myInternetGateway": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "internet"
+          }
+        ]
+      }
+    },
+    "AttachGateway": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": {
+          "Ref": "myvpc"
+        },
+        "InternetGatewayId": {
+          "Ref": "myInternetGateway"
+        }
+      }
+    },
+    "publictable": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "myvpc"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "public"
+          }
+        ]
+      }
+    },
+    "privatetable": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "myvpc"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Private"
+          }
+        ]
+      }
+    },
+    "igwroute": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "publictable"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "myInternetGateway"
+        }
+      }
+    },
+    "webtopublic": {
+      "Description": "associate web subnet to public routable",
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "publictable"
+        },
+        "SubnetId": {
+          "Ref": "web1"
+        }
+      }
+    },
+    "dbtoprivate": {
+      "Description": "associate db1 subnet to private routable",
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "privatetable"
+        },
+        "SubnetId": {
+          "Ref": "db1"
+        }
+      }
+    },
+    "apptoprivate": {
+      "Description": "associate app subnet to private routable",
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "privatetable"
+        },
+        "SubnetId": {
+          "Ref": "app"
+        }
+      }
+    },
+    "websec": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "creating web SecurityGroup",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 22,
+            "ToPort": 22,
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 80,
+            "ToPort": 80,
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 443,
+            "ToPort": 443,
+            "CidrIp": "0.0.0.0/0"
+          }
+        ],
+        "VpcId": {
+          "Ref": "myvpc"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "websg"
+          }
+        ]
+      }
+    },
+    "appsec": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "creating app SecurityGroup",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 0,
+            "ToPort": 65000,
+            "CidrIp": {
+              "Ref": "vpccidr"
+            }
+          }
+        ],
+        "VpcId": {
+          "Ref": "myvpc"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "appsg"
+          }
+        ]
+      }
+    },
+    "dbsec": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "creating add SecurityGroup",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 3306,
+            "ToPort": 3306,
+            "CidrIp": "0.0.0.0/0"
+          }
+        ],
+        "VpcId": {
+          "Ref": "myvpc"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "dbsg"
+          }
+        ]
+      }
+    },
+    "rdsDBSubnetGroup": {
+      "Type": "AWS::RDS::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "this is db subnet",
+        "SubnetIds": [
+          {
+            "Ref": "db1"
+          },
+          {
+            "Ref": "db2"
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "RDSsubnet"
+          }
+        ]
+      }
+    },
+    "dbinstance": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "AllocatedStorage": "20",
+        "DBInstanceClass": "db.t2.micro",
+        "AllowMajorVersionUpgrade": false,
+        "AutoMinorVersionUpgrade": false,
+        "BackupRetentionPeriod": 0,
+        "DBInstanceIdentifier": "jagacf",
+        "DBName": "employee",
+        "VPCSecurityGroups": [
+          {
+            "Ref": "dbsec"
+          }
+        ],
+        "DBSnapshotIdentifier": "",
+        "DBSubnetGroupName": {
+          "Ref": "rdsDBSubnetGroup"
+        },
+        "Engine": "mysql",
+        "EngineVersion": "8.0",
+        "MasterUsername": "jagadeesh",
+        "MasterUserPassword": "12345678",
+        "MultiAZ": false,
+        "PubliclyAccessible": true,
+        "StorageType": "gp2",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "cfdb"
+          }
+        ]
+      }
+    }
+  }
+}
